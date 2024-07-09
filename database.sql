@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS ProductCategories (
 -- Criação da tabela de produtos
 CREATE TABLE IF NOT EXISTS Products (
     ProductID INT PRIMARY KEY AUTO_INCREMENT,
-    Name VARCHAR(100),
-    Description TEXT,
-    Image VARCHAR(255),
+    Name_products VARCHAR(100),
+    Description_products TEXT,
+    Image_products VARCHAR(255),
     Price DECIMAL(10, 2),
     PriceUnit VARCHAR(10),
     CategoryID INT,
@@ -67,7 +67,7 @@ VALUES
     ('Books');
 
 -- Inserção de dados na tabela Products
-INSERT IGNORE INTO Products (Name, Description, Image, Price, PriceUnit, CategoryID, CreatedAt, UpdatedAt)
+INSERT IGNORE INTO Products (Name_products, Description_products, Image_products, Price, PriceUnit, CategoryID, CreatedAt, UpdatedAt)
 VALUES
     ('Microsoft Sculpt Ergonomic Wireless Keyboard', 'Designed for comfort and functionality, offers protection for your joints.', 'https://example.com/sculpt_keyboard.jpg', 80.95, 'USD', 1, '2023-05-12', '2023-05-12'),
     ('Logitech MK345 Wireless Keyboard and Mouse Set', 'Generous palm rest and spill-resistant design makes it comfortable to use.', 'https://example.com/mk345_keyboard.jpg', 39.99, 'USD', 1, '2023-05-12', '2023-05-12');
