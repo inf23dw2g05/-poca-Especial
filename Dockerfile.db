@@ -1,0 +1,7 @@
+
+FROM mysql:5.7-debian
+WORKDIR /app
+COPY ./init.sh .
+COPY ./database.sql .
+RUN chmod +x ./init.sh
+RUN ./init.sh

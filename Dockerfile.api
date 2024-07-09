@@ -1,0 +1,35 @@
+# Use uma imagem base do Node.js
+FROM node:18
+
+# Defina a variável de ambiente NODE_ENV para produção
+ENV NODE_ENV=production
+
+# Defina o diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copie apenas os arquivos de definição de dependências antes de instalar as dependências
+COPY package*.json ./
+
+# Atualize o npm para a versão mais recente
+RUN npm install -g npm@10.8.1
+
+# Adicione um ponto de debug para verificar o package.json
+RUN ls -la /app && cat /app/package.json
+
+# Instale as dependências do projeto
+RUN npm install
+
+# Copie o restante dos arquivos da aplicação
+COPY . .
+
+# Altere as permissões da pasta de trabalho para o usuário node
+RUN chown -R node /app
+
+# Exponha a porta que a aplicação irá usar
+EXPOSE 3000
+
+# Mude para o usuário node
+USER node
+
+# Comando para rodar a aplicação
+CMD ["npm", "start"]

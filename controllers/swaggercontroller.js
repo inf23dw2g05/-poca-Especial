@@ -1,0 +1,585 @@
+const config = require("../config/env");
+const swaggerJSDoc = require("swagger-jsdoc");
+
+const swaggerDefinition = {
+  openapi: "3.0.0",
+  info: {
+    title: "API Documentation",
+    version: "1.0.0",
+    description: "API documentation for the project",
+    contact: { name: "Your Team" },
+  },
+  servers: [{ url: "http://localhost:" + config.port }],
+  paths: {
+    "/Users": {
+      get: {
+        tags: ["UsersController"],
+        summary: "Retrieve Users",
+        operationId: "retrieveUsers",
+        responses: {
+          200: {
+            description: "Array of Users model instances",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "array",
+                  items: {
+                    $ref: "#/components/schemas/Users",
+                  },
+                },
+              },
+            },
+          },
+        },
+        "x-swagger-router-controller": "UsersController",
+      },
+      post: {
+        tags: ["UsersController"],
+        summary: "Create User",
+        operationId: "createUsers",
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Users",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Create a User model instance",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Users",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+        },
+        "x-swagger-router-controller": "UsersController",
+      },
+    },
+    "/Users/{UserID}": {
+      get: {
+        tags: ["UsersController"],
+        summary: "Retrieve User",
+        operationId: "retrieveUser",
+        parameters: [
+          {
+            name: "UserID",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+            description: "ID of the user to retrieve", // Added description
+          },
+        ],
+        responses: {
+          200: {
+            description: "Success",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Users",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "UserID not found",
+          },
+        },
+        "x-swagger-router-controller": "UsersController",
+      },
+      put: {
+        tags: ["UsersController"],
+        summary: "Update User",
+        operationId: "updateUsers",
+        parameters: [
+          {
+            name: "UserID",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Users",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Success",
+            content: {
+              "application/json": {
+                schema: {
+                  description: "User PUT success",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "UserID not found",
+          },
+        },
+        "x-swagger-router-controller": "UsersController",
+      },
+      delete: {
+        tags: ["UsersController"],
+        summary: "Delete User",
+        operationId: "deleteUsers",
+        parameters: [
+          {
+            name: "UserID",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        responses: {
+          204: {
+            description: "No Content",
+          },
+          404: {
+            description: "UserID not found",
+          },
+        },
+        "x-swagger-router-controller": "UsersController",
+      },
+    },
+    "/ProductCategories": {
+      get: {
+        tags: ["ProductController"],
+        summary: "Retrieve Product Categories",
+        operationId: "retrieveProductCategories",
+        responses: {
+          200: {
+            description: "Array of ProductCategories model instances",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "array",
+                  items: {
+                    $ref: "#/components/schemas/ProductCategories",
+                  },
+                },
+              },
+            },
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+      post: {
+        tags: ["ProductController"],
+        summary: "Create Product Category",
+        operationId: "createProductCategory",
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/ProductCategories",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Create a ProductCategory model instance",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/ProductCategories",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+    },
+    "/ProductCategories/{CategoryID}": {
+      get: {
+        tags: ["ProductController"],
+        summary: "Retrieve Product Category",
+        operationId: "retrieveProductCategory",
+        parameters: [
+          {
+            name: "CategoryID",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "Success",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/ProductCategories",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "CategoryID not found",
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+      put: {
+        tags: ["ProductController"],
+        summary: "Update Product Category",
+        operationId: "updateProductCategory",
+        parameters: [
+          {
+            name: "CategoryID",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/ProductCategories",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Success",
+            content: {
+              "application/json": {
+                schema: {
+                  description: "ProductCategory PUT success",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "CategoryID not found",
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+      delete: {
+        tags: ["ProductController"],
+        summary: "Delete Product Category",
+        operationId: "deleteProductCategory",
+        parameters: [
+          {
+            name: "CategoryID",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        responses: {
+          204: {
+            description: "No Content",
+          },
+          404: {
+            description: "CategoryID not found",
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+    },
+    "/Cart": {
+      get: {
+        tags: ["CartController"],
+        summary: "Retrieve Cart Items",
+        operationId: "listCartItems",
+        parameters: [
+          {
+            name: "CartID",
+            in: "query",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "Array of Cart model instances",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "array",
+                  items: {
+                    $ref: "#/components/schemas/Cart",
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "Cart not found",
+          },
+        },
+        "x-swagger-router-controller": "CartController",
+      },
+      post: {
+        tags: ["CartController"],
+        summary: "Add Product to Cart",
+        operationId: "addProductToCart",
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Cart",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Product added to cart",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Cart",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+        },
+        "x-swagger-router-controller": "CartController",
+      },
+    },
+    "/Cart/{cartId}": {
+      get: {
+        tags: ["CartController"],
+        summary: "Retrieve Cart Item",
+        operationId: "retrieveCartItem",
+        parameters: [
+          {
+            name: "cartId",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "Success",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Cart",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "Cart item not found",
+          },
+        },
+        "x-swagger-router-controller": "CartController",
+      },
+      put: {
+        tags: ["CartController"],
+        summary: "Update Cart Item",
+        operationId: "updateCartItem",
+        parameters: [
+          {
+            name: "cartId",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Cart",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Cart item updated",
+            content: {
+              "application/json": {
+                schema: {
+                  description: "Cart item PUT success",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "Cart item not found",
+          },
+        },
+        "x-swagger-router-controller": "CartController",
+      },
+      delete: {
+        tags: ["CartController"],
+        summary: "Remove Product from Cart",
+        operationId: "removeProductFromCart",
+        parameters: [
+          {
+            name: "cartId",
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        responses: {
+          204: {
+            description: "No Content",
+          },
+          404: {
+            description: "Cart item not found",
+          },
+        },
+        "x-swagger-router-controller": "CartController",
+      },
+    },
+  },
+  components: {
+    schemas: {
+      Users: {
+        title: "Users",
+        required: ["UserName"],
+        type: "object",
+        properties: {
+          UserID: {
+            type: "integer",
+            format: "int64",
+          },
+          UserName: {
+            type: "string",
+          },
+          Email: {
+            type: "string",
+          },
+        },
+        additionalProperties: false,
+        example: {
+          UserID: 1,
+          UserName: "John Doe",
+          Email: "john.doe@example.com",
+        },
+      },
+      Cart: {
+        title: "Cart",
+        required: ["CartID", "productId"],
+        type: "object",
+        properties: {
+          CartID: {
+            type: "integer",
+            format: "int64",
+          },
+          productId: {
+            type: "integer",
+            format: "int64",
+          },
+        },
+        additionalProperties: false,
+        example: {
+          CartID: 1,
+          productId: 101,
+        },
+      },
+      ProductCategories: {
+        title: "ProductCategories",
+        required: ["CategoryID", "CategoryName"],
+        type: "object",
+        properties: {
+          CategoryID: {
+            type: "integer",
+            format: "int64",
+          },
+          CategoryName: {
+            type: "string",
+          },
+        },
+        additionalProperties: false,
+        example: {
+          CategoryID: 1,
+          CategoryName: "Electronics",
+        },
+      },
+    },
+  },
+};
+
+const options = {
+  swaggerDefinition,
+  apis: ["./docs/**/*.yaml"],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+module.exports = swaggerSpec;
