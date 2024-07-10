@@ -57,7 +57,7 @@ export default function App() {
 
   const updateUser = () => {
     const { id, userName, email, pass, age, rol, firstName, lastName, createdAt, updatedAt } = newPutUser;
-    if (!id || !userName || !email || !pass || !age || !rol || !firstName || !lastName || !createdAt || !updatedAt) {
+    if (!id || !userName || !email || !pass ) {
       alert("Todos os campos são obrigatórios.");
       return;
     }

@@ -10,23 +10,23 @@ const AuthController = require('../controllers/AuthController');
 
 // Rotas de produtos
 router.get('/ProductCategories', ProductController.retrieveProductCategories);
-router.get('/ProductCategories/:id', ProductController.retrieveProductCategory);
+router.get('/ProductCategories/:ID', ProductController.retrieveProductCategory); // Updated
 router.post('/ProductCategories', ProductController.createProductCategory);
-router.put('/ProductCategories/:id', ProductController.updateProductCategory);
-router.delete('/ProductCategories/:id', ProductController.deleteProductCategory);
+router.put('/ProductCategories/:ID', ProductController.updateProductCategory); // Updated
+router.delete('/ProductCategories/:ID', ProductController.deleteProductCategory); // Updated
 
 // Rotas de usuários
 router.get('/Users', UserController.retrieveUsers);
-router.get('/Users/:ID', UserController.retrieveUser);
+router.get('/Users/:ID', UserController.retrieveUser); // Updated
 router.post('/Users', UserController.createUsers);
-router.put('/Users/:ID', UserController.updateUsers);
-router.delete('/Users/:ID', UserController.deleteUsers);
+router.put('/Users/:ID', UserController.updateUsers); // Updated
+router.delete('/Users/:ID', UserController.deleteUsers); // Updated
 
 // Rotas de carrinho
-router.get('/cart', CartController.listCartItems);
-router.post('/cart', CartController.addProductToCart);
-router.put('/cart/:CartID', CartController.updateCartItem);
-router.delete('/cart/:CartID', CartController.removeProductFromCart);
+router.get('/Cart', CartController.listCartItems);
+router.post('/Cart', CartController.addProductToCart);
+router.put('/Cart/:ID', CartController.updateCartItem); // Updated
+router.delete('/Cart/:ID', CartController.removeProductFromCart); // Updated
 
 // Routes for Authentication
 router.get('/login', AuthController.login);

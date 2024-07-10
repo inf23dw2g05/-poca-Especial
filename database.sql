@@ -6,7 +6,7 @@ USE api_ecommerce;
 -- Criação da tabela de usuários
 START TRANSACTION;
 CREATE TABLE IF NOT EXISTS Users (
-    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    ID INT PRIMARY KEY AUTO_INCREMENT, -- Renomeado de UserID para ID
     UserName VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL,
     Pass VARCHAR(64) NOT NULL,
@@ -20,13 +20,13 @@ CREATE TABLE IF NOT EXISTS Users (
 
 -- Criação da tabela de categorias de produtos
 CREATE TABLE IF NOT EXISTS ProductCategories (
-    CategoryID INT PRIMARY KEY AUTO_INCREMENT,
+    ID INT PRIMARY KEY AUTO_INCREMENT, -- Renomeado de CategoryID para ID
     CategoryName VARCHAR(50) NOT NULL
 );
 
 -- Criação da tabela de produtos
 CREATE TABLE IF NOT EXISTS Products (
-    ProductID INT PRIMARY KEY AUTO_INCREMENT,
+    ID INT PRIMARY KEY AUTO_INCREMENT, -- Renomeado de ProductID para ID
     Name_products VARCHAR(100),
     Description_products TEXT,
     Image_products VARCHAR(255),
@@ -35,17 +35,17 @@ CREATE TABLE IF NOT EXISTS Products (
     CategoryID INT,
     CreatedAt DATE,
     UpdatedAt DATE,
-    FOREIGN KEY (CategoryID) REFERENCES ProductCategories(CategoryID)
+    FOREIGN KEY (CategoryID) REFERENCES ProductCategories(ID) -- Atualizado para referenciar ID
 );
 
 -- Criação da tabela de carrinho de compras
 CREATE TABLE IF NOT EXISTS Cart (
-    CartID INT PRIMARY KEY AUTO_INCREMENT,
+    ID INT PRIMARY KEY AUTO_INCREMENT, -- Renomeado de CartID para ID
     UserID INT,
     ProductID INT,
     Quantity INT,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+    FOREIGN KEY (UserID) REFERENCES Users(ID), -- Atualizado para referenciar ID
+    FOREIGN KEY (ProductID) REFERENCES Products(ID) -- Atualizado para referenciar ID
 );
 COMMIT;
 

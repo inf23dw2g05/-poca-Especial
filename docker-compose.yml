@@ -34,7 +34,18 @@ services:
        NODE_ENV: production
     ports:
       - 3000:3000
+    networks:
+      - shared_network
     
+
+  react:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile.react
+    image: react_image
+    container_name: react
+    ports:
+      - 3006:3006
     networks:
       - shared_network
     

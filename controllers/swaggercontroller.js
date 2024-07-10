@@ -64,14 +64,14 @@ const swaggerDefinition = {
         "x-swagger-router-controller": "UsersController",
       },
     },
-    "/Users/{UserID}": {
+    "/Users/{ID}": { // Updated
       get: {
         tags: ["UsersController"],
         summary: "Retrieve User",
         operationId: "retrieveUser",
         parameters: [
           {
-            name: "UserID",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -96,7 +96,7 @@ const swaggerDefinition = {
             description: "Bad request",
           },
           404: {
-            description: "UserID not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "UsersController",
@@ -107,7 +107,7 @@ const swaggerDefinition = {
         operationId: "updateUsers",
         parameters: [
           {
-            name: "UserID",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -140,7 +140,7 @@ const swaggerDefinition = {
             description: "Bad request",
           },
           404: {
-            description: "UserID not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "UsersController",
@@ -151,7 +151,7 @@ const swaggerDefinition = {
         operationId: "deleteUsers",
         parameters: [
           {
-            name: "UserID",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -165,7 +165,7 @@ const swaggerDefinition = {
             description: "No Content",
           },
           404: {
-            description: "UserID not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "UsersController",
@@ -224,14 +224,14 @@ const swaggerDefinition = {
         "x-swagger-router-controller": "ProductController",
       },
     },
-    "/ProductCategories/{CategoryID}": {
+    "/ProductCategories/{ID}": { // Updated
       get: {
         tags: ["ProductController"],
         summary: "Retrieve Product Category",
         operationId: "retrieveProductCategory",
         parameters: [
           {
-            name: "CategoryID",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -255,7 +255,7 @@ const swaggerDefinition = {
             description: "Bad request",
           },
           404: {
-            description: "CategoryID not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "ProductController",
@@ -266,7 +266,7 @@ const swaggerDefinition = {
         operationId: "updateProductCategory",
         parameters: [
           {
-            name: "CategoryID",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -299,7 +299,7 @@ const swaggerDefinition = {
             description: "Bad request",
           },
           404: {
-            description: "CategoryID not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "ProductController",
@@ -310,7 +310,7 @@ const swaggerDefinition = {
         operationId: "deleteProductCategory",
         parameters: [
           {
-            name: "CategoryID",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -324,7 +324,7 @@ const swaggerDefinition = {
             description: "No Content",
           },
           404: {
-            description: "CategoryID not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "ProductController",
@@ -337,7 +337,7 @@ const swaggerDefinition = {
         operationId: "listCartItems",
         parameters: [
           {
-            name: "CartID",
+            name: "ID", // Updated
             in: "query",
             required: true,
             schema: {
@@ -400,14 +400,14 @@ const swaggerDefinition = {
         "x-swagger-router-controller": "CartController",
       },
     },
-    "/Cart/{cartId}": {
+    "/Cart/{ID}": { // Updated
       get: {
         tags: ["CartController"],
         summary: "Retrieve Cart Item",
         operationId: "retrieveCartItem",
         parameters: [
           {
-            name: "cartId",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -431,7 +431,7 @@ const swaggerDefinition = {
             description: "Bad request",
           },
           404: {
-            description: "Cart item not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "CartController",
@@ -442,7 +442,7 @@ const swaggerDefinition = {
         operationId: "updateCartItem",
         parameters: [
           {
-            name: "cartId",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -475,7 +475,7 @@ const swaggerDefinition = {
             description: "Bad request",
           },
           404: {
-            description: "Cart item not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "CartController",
@@ -486,7 +486,7 @@ const swaggerDefinition = {
         operationId: "removeProductFromCart",
         parameters: [
           {
-            name: "cartId",
+            name: "ID", // Updated
             in: "path",
             required: true,
             schema: {
@@ -500,7 +500,7 @@ const swaggerDefinition = {
             description: "No Content",
           },
           404: {
-            description: "Cart item not found",
+            description: "ID not found", // Updated
           },
         },
         "x-swagger-router-controller": "CartController",
@@ -511,10 +511,10 @@ const swaggerDefinition = {
     schemas: {
       Users: {
         title: "Users",
-        required: ["UserName"],
+        required: ["UserName","Email","Pass"],
         type: "object",
         properties: {
-          UserID: {
+          ID: { // Updated
             type: "integer",
             format: "int64",
           },
@@ -524,20 +524,24 @@ const swaggerDefinition = {
           Email: {
             type: "string",
           },
+          Pass:{
+            type: "string",
+          }
         },
         additionalProperties: false,
         example: {
-          UserID: 1,
+          ID: 1, // Updated
           UserName: "John Doe",
           Email: "john.doe@example.com",
+          Pass:"MAKE YOUR FUCKING PASSWORD"
         },
       },
       Cart: {
         title: "Cart",
-        required: ["CartID", "productId"],
+        required: ["ID", "productId"], // Updated
         type: "object",
         properties: {
-          CartID: {
+          ID: { // Updated
             type: "integer",
             format: "int64",
           },
@@ -548,16 +552,16 @@ const swaggerDefinition = {
         },
         additionalProperties: false,
         example: {
-          CartID: 1,
+          ID: 1, // Updated
           productId: 101,
         },
       },
       ProductCategories: {
         title: "ProductCategories",
-        required: ["CategoryID", "CategoryName"],
+        required: ["ID", "CategoryName"], // Updated
         type: "object",
         properties: {
-          CategoryID: {
+          ID: { // Updated
             type: "integer",
             format: "int64",
           },
@@ -567,7 +571,7 @@ const swaggerDefinition = {
         },
         additionalProperties: false,
         example: {
-          CategoryID: 1,
+          ID: 1, // Updated
           CategoryName: "Electronics",
         },
       },

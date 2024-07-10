@@ -2,10 +2,11 @@ var sql = require("../utils/db");
 
 const addProductToCart = (req, res) => {
   sql.query(
-    "INSERT INTO Cart (CartID, productId) VALUES (?,?)",
+    "INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?,?,?)",
     [
-      req.body.CartID,
-      req.body.productId
+      req.body.UserID,
+      req.body.ProductID,
+      req.body.Quantity
     ],
     function (err, result) {
       if (err) throw err;
@@ -16,8 +17,8 @@ const addProductToCart = (req, res) => {
 
 const removeProductFromCart = (req, res) => {
   sql.query(
-    "DELETE FROM Cart WHERE CartId = ?",
-    [req.params.cartId],
+    "DELETE FROM Cart WHERE ID = ?",
+    [req.params.ID],
     function (err, result) {
       if (err) throw err;
       res.send("Product removed from cart successfully.");
@@ -27,8 +28,8 @@ const removeProductFromCart = (req, res) => {
 
 const listCartItems = (req, res) => {
   sql.query(
-    "SELECT * FROM Cart WHERE CartID = ?",
-    [req.params.CartID],
+    "SELECT * FROM Cart WHERE UserID = ?",
+    [req.query.UserID],
     function (err, result) {
       if (err) throw err;
       res.send(result);
@@ -37,12 +38,11 @@ const listCartItems = (req, res) => {
 };
 
 const updateCartItem = (req, res) => {
-  // Supondo que haja um campo `quantity` no carrinho, que não está definido no schema fornecido
   sql.query(
-    "UPDATE Cart SET quantity = ? WHERE CartId = ?",
+    "UPDATE Cart SET Quantity = ? WHERE ID = ?",
     [
-      req.body.quantity,
-      req.params.cartId
+      req.body.Quantity,
+      req.params.ID
     ],
     function (err, result) {
       if (err) throw err;
