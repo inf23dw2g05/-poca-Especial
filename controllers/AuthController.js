@@ -1,32 +1,43 @@
+// Controller for handling user authentication
 const path = require('path');
 const axios = require("axios");
 
+// Serve login page
 const login = (req, res) => {
     res.sendFile(path.join(__dirname, "..", "/public/login.html"));
 };
 
+// Logout user
 const logout = (req, res) => {
-    req.logout();
-    res.sendFile(path.join(__dirname, "..", "/public/login.html"));
+  req.logout((err) => {
+      if (err) {
+          console.error('Logout error:', err);
+          return res.status(500).send('Logout failed');
+      }
+      res.redirect('/'); // Redireciona para a página inicial ou de login
+  });
 };
 
+
+// Serve protected page
 const protected = (req, res) => {
     res.sendFile(path.join(__dirname, "..", "/public/protected.html"));
 };
 
-const authGitHub = (req, res) => {
-  console.log("authGitHub");
-};
+// GitHub authentication
+const authGitHub = (req, res) => {};
 
+// Callback after authentication
 const authCallback = (req, res) => {
-  console.log("authCallback");
-  res.redirect("/");
+    res.redirect("/");
 };
 
+// Get user details
 const me = (req, res) => {
     res.json(req.user);
 };
 
+// Get GitHub user details
 const gitHubMe = (req, res) => {
     const token = req.user.token;
     axios

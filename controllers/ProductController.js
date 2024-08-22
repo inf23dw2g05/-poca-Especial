@@ -1,17 +1,18 @@
 var sql = require("../utils/db");
 
-const retrieveProductCategories = (req, res) => {
-  sql.query("SELECT * FROM ProductCategories", function (err, result) {
+const retrieveProducts = (req, res) => {
+  sql.query("SELECT * FROM Products", function (err, result) {
     if (err) throw err;
     res.send(result);
   });
 };
 
-const createProductCategory = (req, res) => {
+const createProduct = (req, res) => {
   sql.query(
-    "INSERT INTO ProductCategories (CategoryName) VALUES (?)",
+    "INSERT INTO Products (ProductName, CategoryID) VALUES (?, ?)",
     [
-      req.body.CategoryName
+      req.body.ProductName,
+      req.body.CategoryID
     ], 
     function (err, result) {
       if (err) throw err;
@@ -20,9 +21,9 @@ const createProductCategory = (req, res) => {
   );
 };
 
-const retrieveProductCategory = (req, res) => {
+const retrieveProduct = (req, res) => {
   sql.query(
-    "SELECT * FROM ProductCategories WHERE ID = ?",
+    "SELECT * FROM Products WHERE ID = ?",
     [req.params.ID], 
     function (err, result) {
       if (err) throw err;
@@ -31,22 +32,23 @@ const retrieveProductCategory = (req, res) => {
   );
 };
 
-const deleteProductCategory = (req, res) => {
+const deleteProduct = (req, res) => {
   sql.query(
-    "DELETE FROM ProductCategories WHERE ID = ?", 
+    "DELETE FROM Products WHERE ID = ?", 
     [req.params.ID], 
     function (err, result) {
       if (err) throw err;
-      res.send("Category " + req.params.ID + " successfully deleted.");
+      res.send("Product " + req.params.ID + " successfully deleted.");
     }
   );
 };
 
-const updateProductCategory = (req, res) => {
+const updateProduct = (req, res) => {
   sql.query(
-    "UPDATE ProductCategories SET CategoryName = ? WHERE ID = ?",
+    "UPDATE Products SET ProductName = ?, CategoryID = ? WHERE ID = ?",
     [
-      req.body.CategoryName, 
+      req.body.ProductName, 
+      req.body.CategoryID,
       req.params.ID
     ], function (err, result) {
       if (err) throw err;
@@ -56,9 +58,9 @@ const updateProductCategory = (req, res) => {
 };
 
 module.exports = {
-  retrieveProductCategories, 
-  retrieveProductCategory, 
-  deleteProductCategory, 
-  updateProductCategory, 
-  createProductCategory
+  retrieveProducts, 
+  retrieveProduct, 
+  deleteProduct, 
+  updateProduct, 
+  createProduct
 };

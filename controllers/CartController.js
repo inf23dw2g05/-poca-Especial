@@ -28,8 +28,7 @@ const removeProductFromCart = (req, res) => {
 
 const listCartItems = (req, res) => {
   sql.query(
-    "SELECT * FROM Cart WHERE UserID = ?",
-    [req.query.UserID],
+    "SELECT * FROM Cart",
     function (err, result) {
       if (err) throw err;
       res.send(result);

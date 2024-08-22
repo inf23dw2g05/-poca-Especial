@@ -533,7 +533,7 @@ const swaggerDefinition = {
           ID: 1, // Updated
           UserName: "John Doe",
           Email: "john.doe@example.com",
-          Pass:"MAKE YOUR FUCKING PASSWORD"
+          Pass:"password"
         },
       },
       Cart: {
