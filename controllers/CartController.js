@@ -1,5 +1,17 @@
 var sql = require("../utils/db");
 
+const createCart = (req, res) => {
+  sql.query(
+    "INSERT INTO Cart (UserID) VALUES (?)",
+    [req.body.UserID],
+    function (err, result) {
+      if (err) throw err;
+      res.send({ message: "Cart created successfully.", cartId: result.insertId });
+    }
+  );
+};
+
+
 const addProductToCart = (req, res) => {
   sql.query(
     "INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?,?,?)",
@@ -49,10 +61,27 @@ const updateCartItem = (req, res) => {
     }
   );
 };
+const updateCart = (req, res) => {
+  sql.query(
+    "UPDATE Cart SET UserID = ?, ProductID = ?, Quantity = ? WHERE ID = ?",
+    [
+      req.body.UserID,
+      req.body.ProductID,
+      req.body.Quantity,
+      req.body.CartID
+    ],
+    function (err, result) {
+      if (err) throw err;
+      res.send({ message: "Cart updated successfully." });
+    }
+  );
+};
 
 module.exports = {
   addProductToCart,
   removeProductFromCart,
   listCartItems,
-  updateCartItem
+  updateCartItem,
+  createCart,
+  updateCart
 };

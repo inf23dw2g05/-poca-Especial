@@ -171,9 +171,169 @@ const swaggerDefinition = {
         "x-swagger-router-controller": "UsersController",
       },
     },
-    "/ProductCategories": {
+    "/Products": { // Added for Products
       get: {
         tags: ["ProductController"],
+        summary: "Retrieve Products",
+        operationId: "retrieveProducts",
+        responses: {
+          200: {
+            description: "Array of Products model instances",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "array",
+                  items: {
+                    $ref: "#/components/schemas/Products",
+                  },
+                },
+              },
+            },
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+      post: {
+        tags: ["ProductController"],
+        summary: "Create Product",
+        operationId: "createProduct",
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Products",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Create a Product model instance",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Products",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+    },
+    "/Products/{ID}": { // Added for Products/{ID}
+      get: {
+        tags: ["ProductController"],
+        summary: "Retrieve Product",
+        operationId: "retrieveProduct",
+        parameters: [
+          {
+            name: "ID", // Updated
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+            description: "ID of the product to retrieve", // Added description
+          },
+        ],
+        responses: {
+          200: {
+            description: "Success",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Products",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "ID not found", // Updated
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+      put: {
+        tags: ["ProductController"],
+        summary: "Update Product",
+        operationId: "updateProduct",
+        parameters: [
+          {
+            name: "ID", // Updated
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Products",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Success",
+            content: {
+              "application/json": {
+                schema: {
+                  description: "Product PUT success",
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad request",
+          },
+          404: {
+            description: "ID not found", // Updated
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+      delete: {
+        tags: ["ProductController"],
+        summary: "Delete Product",
+        operationId: "deleteProduct",
+        parameters: [
+          {
+            name: "ID", // Updated
+            in: "path",
+            required: true,
+            schema: {
+              type: "integer",
+              format: "int64",
+            },
+          },
+        ],
+        responses: {
+          204: {
+            description: "No Content",
+          },
+          404: {
+            description: "ID not found", // Updated
+          },
+        },
+        "x-swagger-router-controller": "ProductController",
+      },
+    },
+    "/ProductCategories": {
+      get: {
+        tags: ["ProductCategoryController"], // Updated
         summary: "Retrieve Product Categories",
         operationId: "retrieveProductCategories",
         responses: {
@@ -191,10 +351,10 @@ const swaggerDefinition = {
             },
           },
         },
-        "x-swagger-router-controller": "ProductController",
+        "x-swagger-router-controller": "ProductCategoryController", // Updated
       },
       post: {
-        tags: ["ProductController"],
+        tags: ["ProductCategoryController"], // Updated
         summary: "Create Product Category",
         operationId: "createProductCategory",
         requestBody: {
@@ -221,12 +381,12 @@ const swaggerDefinition = {
             description: "Bad request",
           },
         },
-        "x-swagger-router-controller": "ProductController",
+        "x-swagger-router-controller": "ProductCategoryController", // Updated
       },
     },
     "/ProductCategories/{ID}": { // Updated
       get: {
-        tags: ["ProductController"],
+        tags: ["ProductCategoryController"], // Updated
         summary: "Retrieve Product Category",
         operationId: "retrieveProductCategory",
         parameters: [
@@ -258,10 +418,10 @@ const swaggerDefinition = {
             description: "ID not found", // Updated
           },
         },
-        "x-swagger-router-controller": "ProductController",
+        "x-swagger-router-controller": "ProductCategoryController", // Updated
       },
       put: {
-        tags: ["ProductController"],
+        tags: ["ProductCategoryController"], // Updated
         summary: "Update Product Category",
         operationId: "updateProductCategory",
         parameters: [
@@ -302,10 +462,10 @@ const swaggerDefinition = {
             description: "ID not found", // Updated
           },
         },
-        "x-swagger-router-controller": "ProductController",
+        "x-swagger-router-controller": "ProductCategoryController", // Updated
       },
       delete: {
-        tags: ["ProductController"],
+        tags: ["ProductCategoryController"], // Updated
         summary: "Delete Product Category",
         operationId: "deleteProductCategory",
         parameters: [
@@ -327,7 +487,7 @@ const swaggerDefinition = {
             description: "ID not found", // Updated
           },
         },
-        "x-swagger-router-controller": "ProductController",
+        "x-swagger-router-controller": "ProductCategoryController", // Updated
       },
     },
     "/Cart": {
@@ -573,6 +733,30 @@ const swaggerDefinition = {
         example: {
           ID: 1, // Updated
           CategoryName: "Electronics",
+        },
+      },
+      Products: { // Adicionado para o schema de Products
+        title: "Products",
+        required: ["ID", "ProductName", "Price"], // Campos obrigatórios
+        type: "object",
+        properties: {
+          ID: {
+            type: "integer",
+            format: "int64",
+          },
+          ProductName: {
+            type: "string",
+          },
+          Price: {
+            type: "number",
+            format: "float",
+          },
+        },
+        additionalProperties: false,
+        example: {
+          ID: 1,
+          ProductName: "Sample Product",
+          Price: 19.99,
         },
       },
     },

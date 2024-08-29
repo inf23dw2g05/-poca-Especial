@@ -3,6 +3,7 @@ const cors = require("cors");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 
+
 const config = require("./config/env.js");
 const passport = require("./midlewares/passport");
 const swaggerUi = require("swagger-ui-express");
@@ -14,21 +15,22 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: true,
 };
+const corsOptions = {
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    credentials: true, // Permite cookies
+};
 
 const app = express();
 
 // Middlewares
-app.use(cors({
-    origin: 'http://localhost:3006', // ou '*', para permitir qualquer origem
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type']
-}));
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(__dirname + "/public"));
+
 
 // Rotas
 app.get("/docs/swagger.json", (req, res) => res.json(swaggerSpec));

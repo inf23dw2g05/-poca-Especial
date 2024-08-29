@@ -10,32 +10,32 @@ const CartController = require('../controllers/CartController');
 const AuthController = require('../controllers/AuthController');
 
 // Rotas de categoria de produtos
-router.get('/ProductCategories'/*auth*/, ProductCategoryController.retrieveProductCategories); // Protected
-router.get('/ProductCategories/:ID'/*auth*/, ProductCategoryController.retrieveProductCategory); // Updated
-router.post('/ProductCategories'/*auth*/, ProductCategoryController.createProductCategory); // Protected
-router.put('/ProductCategories/:ID'/*auth*/, ProductCategoryController.updateProductCategory); // Updated
-router.delete('/ProductCategories/:ID'/*auth*/, ProductCategoryController.deleteProductCategory); // Updated
+router.get('/ProductCategories',ProductCategoryController.retrieveProductCategories); // Protected
+router.get('/ProductCategories/:ID',ProductCategoryController.retrieveProductCategory); // Updated
+router.post('/ProductCategories',ProductCategoryController.createProductCategory); // Protected
+router.put('/ProductCategories/:ID', ProductCategoryController.updateProductCategory); // Updated
+router.delete('/ProductCategories/:ID', ProductCategoryController.deleteProductCategory); // Updated
 
 // Rotas de produtos
-router.get('/Products', passport.authenticate("github", { failureRedirect: "/login" }), ProductController.retrieveProducts); // Protected
-router.get('/Products/:ID'/*auth*/, ProductController.retrieveProduct); // Updated
-router.post('/Products'/*auth*/, ProductController.createProduct); // Protected
-router.put('/Products/:ID'/*auth*/, ProductController.updateProduct); // Updated
-router.delete('/Products/:ID'/*auth*/, ProductController.deleteProduct); // Updated
+router.get('/Products', ProductController.retrieveProducts); // Protected
+router.get('/Products/:ID', ProductController.retrieveProduct); // Updated
+router.post('/Products', ProductController.createProduct); // Protected
+router.put('/Products/:ID', ProductController.updateProduct); // Updated
+router.delete('/Products/:ID', ProductController.deleteProduct); // Updated
 
 
 // Rotas de usuários
-router.get('/Users', passport.authenticate("github", { failureRedirect: "/login" }), UserController.retrieveUsers); // Protected
-router.get('/Users/:ID'/*auth*/, UserController.retrieveUser); // Updated
-router.post('/Users'/*auth*/, UserController.createUsers); // Protected
-router.put('/Users/:ID'/*auth*/, UserController.updateUsers); // Updated
-router.delete('/Users/:ID'/*auth*/, UserController.deleteUsers); // Updated
+router.get('/Users', UserController.retrieveUsers); // Protected
+router.get('/Users/:ID', UserController.retrieveUser); // Updated
+router.post('/Users', UserController.createUsers); // Protected
+router.put('/Users/:ID', UserController.updateUsers); // Updated
+router.delete('/Users/:ID', UserController.deleteUsers); // Updated
 
 // Rotas de carrinho
-router.get('/Cart'/*auth*/, CartController.listCartItems); // Protected
-router.post('/Cart'/*auth*/, CartController.addProductToCart); // Protected
-router.put('/Cart/:ID'/*auth*/, CartController.updateCartItem); // Updated
-router.delete('/Cart/:ID'/*auth*/, CartController.removeProductFromCart); // Updated
+router.get('/Cart', CartController.listCartItems); // Protected
+router.post('/Cart', CartController.addProductToCart); // Protected
+router.put('/Cart/:ID', CartController.updateCartItem); // Updated
+router.delete('/Cart/:ID', CartController.removeProductFromCart); // Updated
 
 // Routes for Authentication
 router.get('/login', AuthController.login);

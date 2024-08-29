@@ -3,259 +3,262 @@ import axios from "axios";
 import "./App.css";
 
 
+
 const baseURL = "http://localhost:3000"; // URL do backend
 
 export default function App() {
+
   // Estados para as tabelas
   const [Users, setUsers] = useState([]);
-  const [ProductCategories, setProductCategories] = useState([]);
+  const [Carts, setCarts] = useState([]);
   const [Products, setProducts] = useState([]);
-  const [Cart, setCart] = useState([]);
-
+  const [ProductCategories, setProductCategories] = useState([]);
   // Estados para novos registros
-  const [newUser, setNewUser] = useState({ id: "", userName: "", email: "", pass: "", age: "" });
-  const [newProductCategory, setNewProductCategory] = useState({ id: "", categoryName: "" });
-  const [newProduct, setNewProduct] = useState({ id: "", name: "", description: "", price: "", categoryId: "" });
-  const [newCart, setNewCart] = useState({ id: "", userId: "", productId: "", quantity: "" });
+  const [newUser, setNewUser] = useState({ ID: "", UserName: "", Email: "", Pass: "" });
+  const [newCart, setNewCart] = useState({ ID: "", UserId: "", ProductId: "", Quantity: "" });
+  const [newProductCategory, setNewProductCategory] = useState({ ID: "", Name_category: "" });
+  const [newProduct, setNewProduct] = useState({ ID: "", Name_products: "", Description_products: "", Price: "", CategoryId: "" });
 
-  const [newPutUser, setNewPutUser] = useState({ id: "", userName: "", email: "", pass: "", age: "" });
-  const [newPutProductCategory, setNewPutProductCategory] = useState({ id: "", categoryName: "" });
-  const [newPutProduct, setNewPutProduct] = useState({ id: "", name: "", description: "", price: "", categoryId: "" });
-  const [newPutCart, setNewPutCart] = useState({ id: "", userId: "", productId: "", quantity: "" });
+  const [newPutUser, setNewPutUser] = useState({ ID: "", UserName: "", Email: "", Pass: "" });
+  const [newPutCart, setNewPutCart] = useState({ ID: "", UserId: "", ProductId: "", Quantity: "" });
+  const [newPutProductCategory, setNewPutProductCategory] = useState({ ID: "", Name_category: "" });
+  const [newPutProduct, setNewPutProduct] = useState({ ID: "", Name_products: "", Description_products: "", Price: "", CategoryId: "" });
   const [githubUsername, setGithubUsername] = useState("");
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-
-    if (token) {
-      // Use the token for authentication or store it in your application state
-      console.log('Token:', token);
-    }
-  }, []);
 
   const handleGitHubLogin = () => {
     window.location.href = "http://localhost:3000/auth/github";
+  
+    axios.get(`${baseURL}/user`).then(response => {
+      const username = response.data.username;
+      setGithubUsername(username);
+      // Redirect to localhost:3000 after successful login
+      window.location.href = "http://localhost:3006";
+    }).catch(error => {
+      console.error("Failed to fetch GitHub username", error);
+    });
   };
 
   // Funções CRUD para Users
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get(`${baseURL}/Users`);
+  const fetchUsers = () => {
+    axios.get(`${baseURL}/Users`).then(response => {
       setUsers(response.data);
-    } catch (error) {
-      console.error("Failed to fetch users", error);
-    }
+    });
   };
 
-  const createUser = async () => {
-    try {
-      await axios.post(`${baseURL}/Users`, newUser);
+  const createUser = () => { 
+    const { ID, UserName, Email, Pass } = newUser;   
+    if (!ID || !UserName || !Email || !Pass) {
+      alert("Todos os campos são obrigatórios.");
+      return;
+    }
+    axios.post(`${baseURL}/Users`, newUser).then(() => {
       fetchUsers();
-      setNewUser({ id: "", userName: "", email: "", pass: "", age: "", rol: "", firstName: "", lastName: "", createdAt: "", updatedAt: "" });
-    } catch (error) {
-      console.error("Failed to create user", error);
-    }
+      setNewUser({ ID: "", UserName: "", Email: "", Pass: "" });
+    });
   };
 
-  const updateUser = async () => {
-    const { id, userName, email, pass, age } = newPutUser;
-    if (!id || !userName || !email || !pass || !age) {
+  const updateUser = () => {
+    const { ID, UserName, Email, Pass } = newPutUser;
+    if (!ID || !UserName || !Email || !Pass) {
       alert("Todos os campos são obrigatórios.");
       return;
     }
 
-    try {
-      await axios.put(`${baseURL}/Users/${id}`, { userName, email, pass, age});
-      fetchUsers();
-      setNewPutUser({ id: "", userName: "", email: "", pass: "", age: ""});
-    } catch (error) {
-      console.error("Failed to update user", error);
-    }
+    axios.put(`${baseURL}/Users/${ID}`, { ID, UserName, Email, Pass })
+      .then(() => {
+        fetchUsers();
+        setNewPutUser({ ID: "", UserName: "", Email: "", Pass: "" });
+      })
+      .catch(error => {
+        console.error("Ocorreu um erro ao atualizar o User!", error);
+      });
   };
 
-  const deleteUser = async (id) => {
-    try {
-      await axios.delete(`${baseURL}/Users/${id}`);
+  const deleteUser = (ID) => {
+    axios.delete(`${baseURL}/Users/${ID}`).then(() => {
       fetchUsers();
-    } catch (error) {
-      console.error("Failed to delete user", error);
+    });
+  };
+
+  // Funções CRUD para Carts
+  const fetchCarts = () => {
+    axios.get(`${baseURL}/Cart`).then(response => {
+      setCarts(response.data);
+    });
+  };
+
+  const createCart = () => {
+    const { ID, UserId, ProductId, Quantity } = newCart;   
+    if (!ID || !UserId || !ProductId || !Quantity) {
+      alert("Todos os campos são obrigatórios.");
+      return;
     }
+    axios.post(`${baseURL}/cart`, newCart).then(() => {
+      fetchCarts();
+      setNewCart({ ID: "", UserId: "", ProductId: "", Quantity: "" });
+    });
+  };
+
+  const updateCart = () => {
+    const { ID, UserId, ProductId, Quantity } = newPutCart;
+    if (!ID || !UserId || !ProductId || !Quantity) {
+      alert("Todos os campos são obrigatórios.");
+      return;
+    }
+
+    axios.put(`${baseURL}/Cart/${ID}`, { UserId, ProductId, Quantity })
+      .then(() => {
+        fetchCarts();
+        setNewPutCart({ ID: "", UserId: "", ProductId: "", Quantity: "" });
+      })
+      .catch(error => {
+        console.error("Ocorreu um erro ao atualizar o Cart!", error);
+      });
+  };
+
+  const deleteCart = (ID) => {
+    axios.delete(`${baseURL}/Cart/${ID}`).then(() => {
+      fetchCarts();
+    });
+  };
+
+
+  
+  // Funções CRUD para Products
+  const fetchProducts = () => {
+    axios.get(`${baseURL}/Products`).then(response => {
+      setProducts(response.data);
+    });
+  };
+
+  const createProduct = () => {
+    const { ID, Name_products, Description_products, Price, CategoryId } = newProduct;   
+    if (!ID || !Name_products || !Description_products || !Price || !CategoryId) {
+      alert("Todos os campos são obrigatórios.");
+      return;
+    }
+    axios.post(`${baseURL}/Products`, newProduct)
+      .then(() => {
+        fetchProducts();
+        setNewProduct({ ID: "", Name_products: "", Description_products: "", Price: "", CategoryId: "" });
+      })
+      .catch(error => {
+        console.error("Erro ao criar o produto:", error); // Tratamento de erro adicionado
+        alert("Ocorreu um erro ao criar o produto."); // Mensagem de erro para o usuário
+      });
+  };
+
+  const updateProduct = () => {
+    const { ID, Name_products, Description_products, Price, CategoryId } = newPutProduct;
+    if (!ID || !Name_products || !Description_products || !Price || !CategoryId) {
+      alert("Todos os campos são obrigatórios.");
+      return;
+    }
+
+    axios.put(`${baseURL}/Products/${ID}`, { Name_products, Description_products, Price, CategoryId })
+      .then(() => {
+        fetchProducts();
+        setNewPutProduct({ ID: "", Name_products: "", Description_products: "", Price: "", CategoryId: "" });
+      })
+      .catch(error => {
+        console.error("Ocorreu um erro ao atualizar o Product!", error);
+      });
+  };
+
+  const deleteProduct = (ID) => {
+    axios.delete(`http://localhost:3000/products/${ID}`)
+  .then(response => {
+    console.log(response.data);
+    // Lógica para lidar com sucesso
+  })
+  .catch(error => {
+    console.error("Erro ao excluir o produto:", error.response ? error.response.data : error.message);
+    // Lógica para lidar com erros
+  })
+    .then(() => {
+      fetchProducts();
+    });
   };
 
   // Funções CRUD para ProductCategories
-  const fetchProductCategories = async () => {
-    try {
-      const response = await axios.get(`${baseURL}/ProductCategories`);
+  const fetchProductCategories = () => {
+    axios.get(`${baseURL}/ProductCategories`).then(response => {
       setProductCategories(response.data);
-    } catch (error) {
-      console.error("Failed to fetch product categories", error);
-    }
+    });
   };
 
-  const createProductCategory = async () => {
-    try {
-      await axios.post(`${baseURL}/ProductCategories`, newProductCategory);
-      fetchProductCategories();
-      setNewProductCategory({ id: "", categoryName: "" });
-    } catch (error) {
-      console.error("Failed to create product category", error);
+  const createProductCategory = () => {
+    const { ID, CategoryName } = newProductCategory;   
+    if (!ID || !CategoryName) {
+      alert("Todos os campos são obrigatórios.");
+      return;
     }
+    axios.post(`${baseURL}/ProductCategories`, newProductCategory)
+      .then(() => {
+        fetchProductCategories();
+        setNewProductCategory({ ID: "", CategoryName: "" });
+      })
+      .catch(error => {
+        console.error("Erro ao criar a categoria do produto:", error);
+        alert("Ocorreu um erro ao criar a categoria do produto.");
+      });
   };
 
-  const updateProductCategory = async () => {
-    const { id, categoryName } = newPutProductCategory;
-    if (!id || !categoryName) {
+  const updateProductCategory = () => {
+    const { ID, CategoryName } = newPutProductCategory;
+    if (!ID || !CategoryName) {
       alert("Todos os campos são obrigatórios.");
       return;
     }
 
-    try {
-      await axios.put(`${baseURL}/ProductCategories/${id}`, { categoryName });
+    axios.put(`${baseURL}/ProductCategories/${ID}`, { ID, CategoryName })
+      .then(() => {
+        fetchProductCategories();
+        setNewPutProductCategory({ ID: "", CategoryName: "" });
+      })
+      .catch(error => {
+        console.error("Ocorreu um erro ao atualizar a categoria do produto!", error);
+      });
+  };
+
+  const deleteProductCategory = (ID) => {
+    axios.delete(`${baseURL}/ProductCategories/${ID}`).then(() => {
       fetchProductCategories();
-      setNewPutProductCategory({ id: "", categoryName: "" });
-    } catch (error) {
-      console.error("Failed to update product category", error);
-    }
-  };
-
-  const deleteProductCategory = async (id) => {
-    try {
-      await axios.delete(`${baseURL}/ProductCategories/${id}`);
-      fetchProductCategories();
-    } catch (error) {
-      console.error("Failed to delete product category", error);
-    }
-  };
-
-  // Funções CRUD para Products
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(`${baseURL}/Products`);
-      setProducts(response.data);
-    } catch (error) {
-      console.error("Failed to fetch products", error);
-    }
-  };
-
-  const createProduct = async () => {
-    try {
-      await axios.post(`${baseURL}/Products`, newProduct);
-      fetchProducts();
-      setNewProduct({ id: "", name: "", description: "", price: "", categoryId: "" });
-    } catch (error) {
-      console.error("Failed to create product", error);
-    }
-  };
-
-  const updateProduct = async () => {
-    const { id, name, description, price, categoryId } = newPutProduct;
-    if (!id || !name || !description || !price || !categoryId) {
-      alert("Todos os campos são obrigatórios.");
-      return;
-    }
-
-    try {
-      await axios.put(`${baseURL}/Products/${id}`, { name, description, price,  categoryId });
-      fetchProducts();
-      setNewPutProduct({ id: "", name: "", description: "", price: "", categoryId: ""});
-    } catch (error) {
-      console.error("Failed to update product", error);
-    }
-  };
-
-  const deleteProduct = async (id) => {
-    try {
-      await axios.delete(`${baseURL}/Products/${id}`);
-      fetchProducts();
-    } catch (error) {
-      console.error("Failed to delete product", error);
-    }
-  };
-
-  // Funções CRUD para Cart
-  const fetchCart = async () => {
-    try {
-      const response = await axios.get(`${baseURL}/Cart`);
-      setCart(response.data);
-    } catch (error) {
-      console.error("Failed to fetch cart", error);
-    }
-  };
-
-  const createCart = async () => {
-    try {
-      await axios.post(`${baseURL}/Cart`, newCart);
-      fetchCart();
-      setNewCart({ id: "", userId: "", productId: "", quantity: "" });
-    } catch (error) {
-      console.error("Failed to create cart", error);
-    }
-  };
-
-  const updateCart = async () => {
-    const { id, userId, productId, quantity } = newPutCart;
-    if (!id || !userId || !productId || !quantity) {
-      alert("Todos os campos são obrigatórios.");
-      return;
-    }
-
-    try {
-      await axios.put(`${baseURL}/Cart/${id}`, { userId, productId, quantity });
-      fetchCart();
-      setNewPutCart({ id: "", userId: "", productId: "", quantity: "" });
-    } catch (error) {
-      console.error("Failed to update cart", error);
-    }
-  };
-
-  const deleteCart = async (id) => {
-    if (!id) {
-      console.error("ID is undefined");
-      return;
-    }
-    try {
-      await axios.delete(`${baseURL}/Cart/${id}`);
-      fetchCart();
-    } catch (error) {
-      console.error("Failed to delete cart", error);
-    }
+    });
   };
 
   useEffect(() => {
     fetchUsers();
-    fetchProductCategories();
+    fetchCarts();
     fetchProducts();
-    fetchCart();
+    fetchProductCategories(); // Adicionado para buscar categorias de produtos
   }, []);
 
   return (
     <div>
       <div>
-      <button onClick={handleGitHubLogin}>Login with GitHub</button>
-      {githubUsername && <p>GitHub Username: {githubUsername}</p>}
+        <button onClick={handleGitHubLogin}>Login with GitHub</button>
+        {githubUsername && <p>GitHub Username: {githubUsername}</p>}
       </div>
       <h2>Users</h2>
       <table>
         <thead>
           <tr>
-            <th>UsersID</th>
-            <th>UserName</th>
+            <th>UserID</th>
+            <th>Username</th>
             <th>Email</th>
-            <th>Pass</th>
-            <th>Age</th>
+            <th>Password</th>
           </tr>
         </thead>
         <tbody>
-          {Users.map(Users => (
-            <tr key={Users.id}>
-              <td>{Users.id}</td>
-              <td>{Users.userName}</td>
-              <td>{Users.email}</td>
-              <td>{Users.pass}</td>
-              <td>{Users.age}</td>
+          {Array.isArray(Users) && Users.map(User => ( // Check if Users is an array
+            <tr key={User.ID}>
+              <td>{User.ID}</td>
+              <td>{User.UserName}</td>
+              <td>{User.Email}</td>
+              <td>{User.Pass}</td>
               <td>
-                <button onClick={() => deleteUser(Users.id)}>Delete</button>
+                <button onClick={() => deleteUser(User.ID)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -264,161 +267,50 @@ export default function App() {
       <h3>Create User</h3>
       <input
         placeholder="UserID"
-        value={newUser.id}
-        onChange={e => setNewUser({ ...newUser, id: e.target.value })}
+        value={newUser.ID}
+        onChange={e => setNewUser({ ...newUser, ID: e.target.value })}
       />
       <input
-        placeholder="UserName"
-        value={newUser.userName}
-        onChange={e => setNewUser({ ...newUser, userName: e.target.value })}
+        placeholder="Username"
+        value={newUser.UserName}
+        onChange={e => setNewUser({ ...newUser, UserName: e.target.value })}
+      />
+      <input
+        placeholder="Email"
+        value={newUser.Email}
+        onChange={e => setNewUser({ ...newUser, Email: e.target.value })}
+      />
+      <input
+        placeholder="Password"
+        value={newUser.Pass}
+        onChange={e => setNewUser({ ...newUser, Pass: e.target.value })}
       />
       <button onClick={createUser}>Create User</button>
 
       <h3>Update User</h3>
       <input
         placeholder="UserID"
-        value={newPutUser.id}
-        onChange={e => setNewPutUser({ ...newPutUser, id: e.target.value })}
+        value={newPutUser.ID}
+        onChange={e => setNewPutUser({ ...newPutUser, ID: e.target.value })}
       />
       <input
-        placeholder="UserName"
-        value={newPutUser.userName}
-        onChange={e => setNewPutUser({ ...newPutUser, userName: e.target.value })}
+        placeholder="Username"
+        value={newPutUser.UserName}
+        onChange={e => setNewPutUser({ ...newPutUser, UserName: e.target.value })}
+      />
+      <input
+        placeholder="Email"
+        value={newPutUser.Email}
+        onChange={e => setNewPutUser({ ...newPutUser, Email: e.target.value })}
+      />
+      <input
+        placeholder="Password"
+        value={newPutUser.Pass}
+        onChange={e => setNewPutUser({ ...newPutUser, Pass: e.target.value })}
       />
       <button onClick={updateUser}>Update User</button>
 
-     
-      <h2>ProductCategories</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ProductCategoryID</th>
-            <th>ProductCategoryName</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ProductCategories.map(ProductCategories => (
-            <tr key={ProductCategories.id}>
-              <td>{ProductCategories.id}</td>
-              <td>{ProductCategories.categoryName}</td>
-              <td>
-                <button onClick={() => deleteProductCategory(ProductCategories.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h3>Create ProductCategory</h3>
-      <input
-        placeholder="ProductCategoryID"
-        value={newProductCategory.id}
-        onChange={e => setNewProductCategory({ ...newProductCategory, id: e.target.value })}
-      />
-      <input
-        placeholder="ProductCategoryName"
-        value={newProductCategory.categoryName}
-        onChange={e => setNewProductCategory({ ...newProductCategory, categoryName: e.target.value })}
-      />
-      <button onClick={createProductCategory}>Create ProductCategory</button>
-
-      <h3>Update ProductCategory</h3>
-      <input
-        placeholder="ProductCategoryID"
-        value={newPutProductCategory.id}
-        onChange={e => setNewPutProductCategory({ ...newPutProductCategory, id: e.target.value })}
-      />
-      <input
-        placeholder="ProductCategoryName"
-        value={newPutProductCategory.categoryName}
-        onChange={e => setNewPutProductCategory({ ...newPutProductCategory, categoryName: e.target.value })}
-      />
-      <button onClick={updateProductCategory}>Update ProductCategory</button>
-
-      
-      <h2>Products</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ProductID</th>
-            <th>ProductName</th>
-            <th>ProductDescription</th>
-            <th>ProductPrice</th>
-            <th>ProductCategoryID</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Products.map(Products => (
-            <tr key={Products.id}>
-              <td>{Products.id}</td>
-              <td>{Products.name}</td>
-              <td>{Products.description}</td>
-              <td>{Products.price}</td>
-              <td>{Products.categoryId}</td>
-              <td>
-                <button onClick={() => deleteProduct(Products.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h3>Create Product</h3>
-      <input
-        placeholder="ProductID"
-        value={newProduct.id}
-        onChange={e => setNewProduct({ ...newProduct, id: e.target.value })}
-      />
-      <input
-        placeholder="ProductName"
-        value={newProduct.name}
-        onChange={e => setNewProduct({ ...newProduct, name: e.target.value })}
-      />
-      <input
-        placeholder="ProductDescription"
-        value={newProduct.description}
-        onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
-      />
-      <input
-        placeholder="ProductPrice"
-        value={newProduct.price}
-        onChange={e => setNewProduct({ ...newProduct, price: e.target.value })}
-      />
-      <input
-        placeholder="ProductCategoryID"
-        value={newProduct.categoryId}
-        onChange={e => setNewProduct({ ...newProduct, categoryId: e.target.value })}
-      />
-      <button onClick={createProduct}>Create Product</button>
-
-      <h3>Update Product</h3>
-      <input
-        placeholder="ProductID"
-        value={newPutProduct.id}
-        onChange={e => setNewPutProduct({ ...newPutProduct, id: e.target.value })}
-      />
-      <input
-        placeholder="ProductName"
-        value={newPutProduct.name}
-        onChange={e => setNewPutProduct({ ...newPutProduct, name: e.target.value })}
-      />
-      <input
-        placeholder="ProductDescription"
-        value={newPutProduct.description}
-        onChange={e => setNewPutProduct({ ...newPutProduct, description: e.target.value })}
-      />
-      <input
-        placeholder="ProductPrice"
-        value={newPutProduct.price}
-        onChange={e => setNewPutProduct({ ...newPutProduct, price: e.target.value })}
-      />
-      <input
-        placeholder="ProductCategoryID"
-        value={newPutProduct.categoryId}
-        onChange={e => setNewPutProduct({ ...newPutProduct, categoryId: e.target.value })}
-      />
-      <button onClick={updateProduct}>Update Product</button>
-
-      
-      <h2>Cart</h2>
+      <h2>Carts</h2>
       <table>
         <thead>
           <tr>
@@ -426,17 +318,18 @@ export default function App() {
             <th>UserID</th>
             <th>ProductID</th>
             <th>Quantity</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {Cart.map(Cart => (
-            <tr key={Cart.id}>
-              <td>{Cart.id}</td>
-              <td>{Cart.userId}</td>
-              <td>{Cart.productId}</td>
-              <td>{Cart.quantity}</td>
+          {Array.isArray(Carts) && Carts.map(Cart => (
+            <tr key={Cart.ID}>
+              <td>{Cart.ID}</td>
+              <td>{Cart.UserID}</td>
+              <td>{Cart.ProductID}</td>
+              <td>{Cart.Quantity}</td>
               <td>
-                <button onClick={() => deleteCart(Cart.id)}>Delete</button>
+                <button onClick={() => deleteCart(Cart.ID)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -445,50 +338,174 @@ export default function App() {
       <h3>Create Cart</h3>
       <input
         placeholder="CartID"
-        value={newCart.id}
-        onChange={e => setNewCart({ ...newCart, id: e.target.value })}
+        value={newCart.ID}
+        onChange={e => setNewCart({ ...newCart, ID: e.target.value })}
       />
       <input
         placeholder="UserID"
-        value={newCart.userId}
-        onChange={e => setNewCart({ ...newCart, userId: e.target.value })}
+        value={newCart.UserId}
+        onChange={e => setNewCart({ ...newCart, UserId: e.target.value })}
       />
       <input
         placeholder="ProductID"
-        value={newCart.productId}
-        onChange={e => setNewCart({ ...newCart, productId: e.target.value })}
+        value={newCart.ProductId}
+        onChange={e => setNewCart({ ...newCart, ProductId: e.target.value })}
       />
       <input
         placeholder="Quantity"
-        value={newCart.quantity}
-        onChange={e => setNewCart({ ...newCart, quantity: e.target.value })}
+        value={newCart.Quantity}
+        onChange={e => setNewCart({ ...newCart, Quantity: e.target.value })}
       />
       <button onClick={createCart}>Create Cart</button>
 
       <h3>Update Cart</h3>
       <input
         placeholder="CartID"
-        value={newPutCart.id}
-        onChange={e => setNewPutCart({ ...newPutCart, id: e.target.value })}
+        value={newPutCart.ID}
+        onChange={e => setNewPutCart({ ...newPutCart, ID: e.target.value })}
       />
       <input
         placeholder="UserID"
-        value={newPutCart.userId}
-        onChange={e => setNewPutCart({ ...newPutCart, userId: e.target.value })}
+        value={newPutCart.UserId}
+        onChange={e => setNewPutCart({ ...newPutCart, UserId: e.target.value })}
       />
       <input
         placeholder="ProductID"
-        value={newPutCart.productId}
-        onChange={e => setNewPutCart({ ...newPutCart, productId: e.target.value })}
+        value={newPutCart.ProductId}
+        onChange={e => setNewPutCart({ ...newPutCart, ProductId: e.target.value })}
+      />
+      <button onClick={updateCart}>Update Cart</button>
+
+      <h2>Products</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ProductID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>CategoryID</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.isArray(Products) && Products.map(Product => (
+            <tr key={Product.ID}>
+              <td>{Product.ID}</td>
+              <td>{Product.Name_products}</td>
+              <td>{Product.Description_products}</td>
+              <td>{Product.Price}</td>
+              <td>{Product.CategoryID}</td>
+              <td>
+                <button onClick={() => deleteProduct(Product.ID)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <h3>Create Product</h3>
+      <input
+        placeholder="ProductID"
+        value={newProduct.ID}
+        onChange={e => setNewProduct({ ...newProduct, ID: e.target.value })}
       />
       <input
-        placeholder="Quantity"
-        value={newPutCart.quantity}
-        onChange={e => setNewPutCart({ ...newPutCart, quantity: e.target.value })}
-      />  
-      <button onClick={updateCart}>Update Cart</button>
-    
-    
+        placeholder="Name"
+        value={newProduct.Name_products}
+        onChange={e => setNewProduct({ ...newProduct, Name_products: e.target.value })}
+      />
+      <input
+        placeholder="Description"
+        value={newProduct.Description_products}
+        onChange={e => setNewProduct({ ...newProduct, Description_products: e.target.value })}
+      />
+      <input
+        placeholder="Price"
+        value={newProduct.Price}
+        onChange={e => setNewProduct({ ...newProduct, Price: e.target.value })}
+      />
+      <input
+        placeholder="CategoryID"
+        value={newProduct.CategoryId}
+        onChange={e => setNewProduct({ ...newProduct, CategoryId: e.target.value })}
+      />
+      <button onClick={createProduct}>Create Product</button>
+
+      <h3>Update Product</h3>
+      <input
+        placeholder="ProductID"
+        value={newPutProduct.ID}
+        onChange={e => setNewPutProduct({ ...newPutProduct, ID: e.target.value })}
+      />
+      <input
+        placeholder="Name"
+        value={newPutProduct.Name_products}
+        onChange={e => setNewPutProduct({ ...newPutProduct, Name_products: e.target.value })}
+      />
+      <input
+        placeholder="Description"
+        value={newPutProduct.Description_products}
+        onChange={e => setNewPutProduct({ ...newPutProduct, Description_products: e.target.value })}
+      />
+      <input
+        placeholder="Price"
+        value={newPutProduct.Price}
+        onChange={e => setNewPutProduct({ ...newPutProduct, Price: e.target.value })}
+      />
+      <input
+        placeholder="CategoryID"
+        value={newPutProduct.CategoryId}
+        onChange={e => setNewPutProduct({ ...newPutProduct, CategoryId: e.target.value })}
+      />
+      <button onClick={updateProduct}>Update Product</button>
+
+      <h2>Product Categories</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>CategoryID</th>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.isArray(ProductCategories) && ProductCategories.map(Category => (
+            <tr key={Category.ID}>
+              <td>{Category.ID}</td>
+              <td>{Category.CategoryName}</td>
+              <td>
+                <button onClick={() => deleteProductCategory(Category.ID)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <h3>Create Product Category</h3>
+      <input
+        placeholder="CategoryID"
+        value={newProductCategory.ID}
+        onChange={e => setNewProductCategory({ ...newProductCategory, ID: e.target.value })}
+      />
+      <input
+        placeholder="Name"
+        value={newProductCategory.CategoryName}
+        onChange={e => setNewProductCategory({ ...newProductCategory, CategoryName: e.target.value })}
+      />
+      <button onClick={createProductCategory}>Create Product Category</button>
+
+      <h3>Update Product Category</h3>
+      <input
+        placeholder="CategoryID"
+        value={newPutProductCategory.ID}
+        onChange={e => setNewPutProductCategory({ ...newPutProductCategory, ID: e.target.value })}
+      />
+      <input
+        placeholder="Name"
+        value={newPutProductCategory.CategoryName}
+        onChange={e => setNewPutProductCategory({ ...newPutProductCategory, CategoryName: e.target.value })}
+      />
+      <button onClick={updateProductCategory}>Update Product Category</button>
+
     </div>
   );
-}
+} 

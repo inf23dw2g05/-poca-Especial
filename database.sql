@@ -9,8 +9,7 @@ CREATE TABLE IF NOT EXISTS Users (
     ID INT PRIMARY KEY AUTO_INCREMENT, -- Renomeado de UserID para ID
     UserName VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL,
-    Pass VARCHAR(64) NOT NULL,
-    Age INT
+    Pass VARCHAR(64) NOT NULL
 );
 
 -- Criação da tabela de categorias de produtos
@@ -44,38 +43,38 @@ COMMIT;
 START TRANSACTION;
 
 -- Inserção de dados na tabela Users
-INSERT IGNORE INTO Users (UserName, Email, Pass, Age)
+INSERT IGNORE INTO Users (UserName, Email, Pass)
 VALUES
-    ('john.doe', 'john.doe@example.com', 'hashed_password_1', 33),
-    ('jane.smith', 'jane.smith@example.com', 'hashed_password_2', 29),
-    ('robert.johnson', 'robert.johnson@example.com', 'hashed_password_3', 40),
-    ('alice.brown', 'alice.brown@example.com', 'hashed_password_4', 25),
-    ('charlie.davis', 'charlie.davis@example.com', 'hashed_password_5', 30),
-    ('emily.evans', 'emily.evans@example.com', 'hashed_password_6', 28),
-    ('frank.garcia', 'frank.garcia@example.com', 'hashed_password_7', 35),
-    ('grace.harris', 'grace.harris@example.com', 'hashed_password_8', 32),
-    ('henry.jackson', 'henry.jackson@example.com', 'hashed_password_9', 27),
-    ('isabella.king', 'isabella.king@example.com', 'hashed_password_10', 26),
-    ('jack.lee', 'jack.lee@example.com', 'hashed_password_11', 34),
-    ('karen.martin', 'karen.martin@example.com', 'hashed_password_12', 31),
-    ('larry.moore', 'larry.moore@example.com', 'hashed_password_13', 29),
-    ('mary.perez', 'mary.perez@example.com', 'hashed_password_14', 33),
-    ('nancy.roberts', 'nancy.roberts@example.com', 'hashed_password_15', 36),
-    ('oliver.smith', 'oliver.smith@example.com', 'hashed_password_16', 38),
-    ('paul.taylor', 'paul.taylor@example.com', 'hashed_password_17', 37),
-    ('quincy.thomas', 'quincy.thomas@example.com', 'hashed_password_18', 39),
-    ('rachel.white', 'rachel.white@example.com', 'hashed_password_19', 28),
-    ('steve.wilson', 'steve.wilson@example.com', 'hashed_password_20', 32),
-    ('tina.young', 'tina.young@example.com', 'hashed_password_21', 30),
-    ('ursula.zimmerman', 'ursula.zimmerman@example.com', 'hashed_password_22', 35),
-    ('victor.adams', 'victor.adams@example.com', 'hashed_password_23', 40),
-    ('wendy.baker', 'wendy.baker@example.com', 'hashed_password_24', 29),
-    ('xander.clark', 'xander.clark@example.com', 'hashed_password_25', 31),
-    ('yara.davis', 'yara.davis@example.com', 'hashed_password_26', 27),
-    ('zachary.evans', 'zachary.evans@example.com', 'hashed_password_27', 34),
-    ('amy.franklin', 'amy.franklin@example.com', 'hashed_password_28', 33),
-    ('brian.gonzalez', 'brian.gonzalez@example.com', 'hashed_password_29', 36),
-    ('carol.hall', 'carol.hall@example.com', 'hashed_password_30', 38);
+    ('john.doe', 'john.doe@example.com', 'hashed_password_1'),
+    ('jane.smith', 'jane.smith@example.com', 'hashed_password_2'),
+    ('robert.johnson', 'robert.johnson@example.com', 'hashed_password_3'),
+    ('alice.brown', 'alice.brown@example.com', 'hashed_password_4'),
+    ('charlie.davis', 'charlie.davis@example.com', 'hashed_password_5'),
+    ('emily.evans', 'emily.evans@example.com', 'hashed_password_6'),
+    ('frank.garcia', 'frank.garcia@example.com', 'hashed_password_7'),
+    ('grace.harris', 'grace.harris@example.com', 'hashed_password_8'),
+    ('henry.jackson', 'henry.jackson@example.com', 'hashed_password_9'),
+    ('isabella.king', 'isabella.king@example.com', 'hashed_password_10'),
+    ('jack.lee', 'jack.lee@example.com', 'hashed_password_11'),
+    ('karen.martin', 'karen.martin@example.com', 'hashed_password_12'),
+    ('larry.moore', 'larry.moore@example.com', 'hashed_password_13'),
+    ('mary.perez', 'mary.perez@example.com', 'hashed_password_14'),
+    ('nancy.roberts', 'nancy.roberts@example.com', 'hashed_password_15'),
+    ('oliver.smith', 'oliver.smith@example.com', 'hashed_password_16'),
+    ('paul.taylor', 'paul.taylor@example.com', 'hashed_password_17'),
+    ('quincy.thomas', 'quincy.thomas@example.com', 'hashed_password_18'),
+    ('rachel.white', 'rachel.white@example.com', 'hashed_password_19'),
+    ('steve.wilson', 'steve.wilson@example.com', 'hashed_password_20'),
+    ('tina.young', 'tina.young@example.com', 'hashed_password_21'),
+    ('ursula.zimmerman', 'ursula.zimmerman@example.com', 'hashed_password_22'),
+    ('victor.adams', 'victor.adams@example.com', 'hashed_password_23'),
+    ('wendy.baker', 'wendy.baker@example.com', 'hashed_password_24'),
+    ('xander.clark', 'xander.clark@example.com', 'hashed_password_25'),
+    ('yara.davis', 'yara.davis@example.com', 'hashed_password_26'),
+    ('zachary.evans', 'zachary.evans@example.com', 'hashed_password_27'),
+    ('amy.franklin', 'amy.franklin@example.com', 'hashed_password_28'),
+    ('brian.gonzalez', 'brian.gonzalez@example.com', 'hashed_password_29'),
+    ('carol.hall', 'carol.hall@example.com', 'hashed_password_30');
 
 -- Inserção de dados na tabela ProductCategories
 INSERT IGNORE INTO ProductCategories (CategoryName)
