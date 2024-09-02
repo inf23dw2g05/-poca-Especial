@@ -27,3 +27,7 @@ Json - (https://www.json.org/json-en.html)
 Yaml - (https://yaml.org/)
 
 React - (https://react.dev)
+
+* Apresentação do Projeto: (https://github.com/inf23dw2g05/Epoca-Especial/blob/main/frontend/Docs/Apresentação.md)
+
+* Recursos do Projeto: (https://github.com/inf23dw2g05/Epoca-Especial/blob/main/frontend/Docs/Resources.md)
