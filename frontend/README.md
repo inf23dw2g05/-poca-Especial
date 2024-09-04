@@ -10,6 +10,12 @@ Bernardo Fraga  (a043363@umaia.pt)
 
 O objetivo deste trabalho é criar uma aplicação web dedicada ao E-Commerce, utilizando o Docker para garantir um ambiente consistente. A aplicação permitirá aos utilizadores autenticar-se via GitHub OAuth 2.0 para login seguro. Seguindo uma abordagem RESTful, a aplicação gerenciará informações sobre Usuários, Produtos, Categorias de Produtos e Carts, proporcionando uma experiência favorável e prática para o utilizador.
 
+| Page      | Image |
+| ----------- | ----------- |
+|  Get Users e Delete User  |  ![Get e Delete User](prints/Pedidoget_DeleteUsers.png)     |
+| Create User |   ![Create User](prints/CreateUser.png)     |
+|   Update User    |   ![Update User](prints/UpdateUser.png)    |
+
 # Aplicações que foram utilizadas neste projeto:
 
 Mysql - (https://www.mysql.com/)
