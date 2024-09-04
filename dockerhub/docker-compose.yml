@@ -2,11 +2,8 @@ version: '3.8'
 
 services:
   database:
-    build:
-      context: ./
-      dockerfile: Dockerfile.db
+    image: inf23dw2g05e/inf23dw2g05e:database
     command: --default-authentication-plugin=mysql_native_password
-    image: database_image
     container_name: database
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -24,10 +21,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
-    build:
-      context: ./
-      dockerfile: Dockerfile.api
-    image: api_image
+    image: inf23dw2g05e/inf23dw2g05e:api
     container_name: api
     restart: unless-stopped
     healthcheck:
@@ -47,10 +41,7 @@ services:
     depends_on:
       api:
         condition: service_healthy
-    build:
-      context: ./frontend
-      dockerfile: dockerfile.react
-    image: react_image
+    image: inf23dw2g05e/inf23dw2g05e:react
     container_name: react
     ports:
       - 3006:3006

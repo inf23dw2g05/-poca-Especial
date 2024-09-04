@@ -38,43 +38,35 @@ const retrieveProduct = (req, res) => {
 const deleteProduct = async (req, res) => {
   const productId = req.params.ID; // Obtém o ID do produto a partir dos parâmetros da requisição
 
-  let connection;
-
   try {
-      // Obter uma conexão do pool
-      connection = await sql.getConnection();
-
-      // Iniciar uma transação
-      await connection.beginTransaction();
-
-      // Verificar se o produto está em uso na tabela Cart
+      // Verifica se o produto está em uso no carrinho
       const cartCheckQuery = "SELECT COUNT(*) AS count FROM Cart WHERE ProductID = ?";
-      const [cartCheckResult] = await connection.query(cartCheckQuery, [productId]);
+      const cartCheckResult = await new Promise((resolve, reject) => {
+          sql.query(cartCheckQuery, [productId], (err, result) => {
+              if (err) reject(err);
+              else resolve(result);
+          });
+      });
+
+      // Verifique o que está sendo retornado
+      console.log(cartCheckResult); // Para depuração
 
       if (cartCheckResult[0].count > 0) {
-          // Se houver referências, não permita a exclusão
-          await connection.rollback();
           return res.status(400).send("Não é possível excluir o produto, pois ele está em uso no carrinho.");
       }
 
       // Excluir o produto
-      await connection.query("DELETE FROM Products WHERE ID = ?", [productId]);
+      await new Promise((resolve, reject) => {
+          sql.query("DELETE FROM Products WHERE ID = ?", [productId], (err, result) => {
+              if (err) reject(err);
+              else resolve(result);
+          });
+      });
 
-      // Confirmar a transação
-      await connection.commit();
-      
       res.status(200).send("Produto excluído com sucesso.");
   } catch (error) {
-      // Reverter a transação em caso de erro
-      if (connection) {
-          await connection.rollback();
-      }
       console.error("Erro ao excluir o produto:", error); // Log do erro para depuração
-      res.status(500).send("Erro ao excluir o produto: " + error.message); // Retorne a mensagem de erro
-  } finally {
-      if (connection) {
-          connection.release(); // Certifique-se de liberar a conexão de volta ao pool
-      }
+      res.status(500).send("Erro ao excluir o produto.");
   }
 };
 
